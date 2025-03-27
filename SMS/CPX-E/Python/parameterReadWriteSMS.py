@@ -2,6 +2,8 @@ from pyModbusTCP.client import ModbusClient
 from time import sleep
 import struct
 
+# ----------- Helper Functions -----------
+
 def float_to_modbus_registers_swap_endian(float_value):
     # Convert the float to its 32-bit IEEE 754 representation (packed as big-endian)
     packed = struct.pack('!f', float_value)  # '!f' means big-endian 4-byte float
@@ -23,20 +25,21 @@ def float_to_modbus_registers_swap_endian(float_value):
 # c = ModbusClient(host="192.168.1.199", auto_open=True, auto_close=True)
 
 # TCP auto connect on first modbus request
+# Specify the IP address of the CPX-E-EP module
 c = ModbusClient(host="192.168.1.199", port=502, unit_id=1, auto_open=True)
 
-
-def Fun_Read(a):
+# Use the index number specified in the SMS user manual
+def Fun_Read(index):
     c.write_single_register(61,5)
     c.write_single_register(62,0)
-    c.write_single_register(63,a)
+    c.write_single_register(63,index)
     c.write_single_register(64,0)
     c.write_single_register(65,0)
     c.write_single_register(60,50)
     while(c.read_holding_registers(60,1) != [0]):
          regs = c.read_holding_registers(66,4)
     if regs:
-         print(str(a) + "=" + str(regs))
+         print(str(index) + "=" + str(regs))
     else:
          print("read error")
 
@@ -89,7 +92,12 @@ def Fun_Write_End_Position(value, module, channel):
     c.write_single_register(67,register_2)
     c.write_single_register(60,51)
 
+# ----------- Main Program -----------
+
 # print("ISDU Status: " + str(c.read_holding_registers(60,1)))
+
+# In CPX-E, module numbers start at 0. For example, CPX-E-EP module = 0
+# In CPX-E-4IOL, IO-Link ports start at 0. For example, first port will be channel = 0
 
 # Write/Read Speed IN
 Fun_Write_SpeedIn(10, module=5, channel=0)
