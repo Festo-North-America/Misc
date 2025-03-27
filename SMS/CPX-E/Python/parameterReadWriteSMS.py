@@ -114,11 +114,13 @@ Fun_Write_Force(5, module=5, channel=0)
 print("Force")
 Fun_Read(258)
 
+# For position values, data type is float32 but decimal points are included in the integer part of the value. For example, 199.98 is entered as 19998
 # Write/Read End Position
 Fun_Write_End_Position(19998, module=5, channel=0)
 print("Out Pos")
 print(Fun_Read(262))
 
+# Intermediate Position should always be less or equal than End Position. Otherwise, an error will be triggered
 # Write/Read Intermediate Position
 Fun_Write_Intermediate_Position(5000, module=5, channel=0)
 print("Intermediate Pos")
