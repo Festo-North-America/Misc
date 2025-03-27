@@ -126,6 +126,11 @@ Fun_Write_Intermediate_Position(5000, module=5, channel=0)
 print("Intermediate Pos")
 Fun_Read(264)
 
+# This section can be uncommented to command positions, be mindful of your own Modbus addressing since this will depend on your specific configuration.
+# 256 = Move In
+# 512 = Move Out
+# 1024 = Quit Error
+# 4096 = Move Intermediate
 # while(True):
 #     if c.write_single_register(40008,512):
 #         print("write ok")
